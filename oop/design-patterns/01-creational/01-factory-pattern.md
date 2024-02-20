@@ -8,23 +8,37 @@
 
 ## Problem: App Requires More Reference Types For Business Needs
 
-Assume a sneaker selling company is making a platform to handle selling various kinds of sneakers. Initially, the company only sold one type of Nike Sneakers - Nike Sb Dunks. However, after a good first year, the company decides to spend their revenue to invest in other Nike sneakers to sell on their platform, namely: Air Jordans and Air Forces. 
+Assume a sneaker/shoe selling company has a platform for selling various kinds of sneaker styles and brands.
+The company's system currently utilizes an initial version of the product creation service; unfortunately, the product
+creation service only supports selling one brand and one style - namely, `Nike` (brand) and `SbDunk` (style).
 
-The developers are tasked to modify the existing selling platform to now include Air Jordans and Air Forces as products that can be sold. While analyzing the system, the developers being to add switch statements in the cleint code to create the correct objects - AirJordan, AirForce, or SbDunk. 
+After a very good first year in sales with a large margin of growth in profits, the comapny is looking to expand their
+product catalog by adding more well-known brands and styles. They want to include various new Nike-based styles and 
+carry a new brand. To support these new business requirements, v1.0.0 of the product service must be updated.
+ 
+The comapny's developers are tasked to modify the existing production creation service to now include the following: 
 
-However, the development team quickly realizes that this method of adding new products will become unweidly in the long-term. The reason, is becauseeach new product that must be added requires two things:
+1. Two Brands: Adidas, Nike
+2. Adidas Styles: Gazelle, Yeezy, Sambda
+3. Nike Styles: AirForce, AirJordan, SbDunk
 
-1) a object contruction call - `new <productName>()`
-2) conditional logic to determine which object to create
+The development team begins adding new class types for the above. They then start using switch statements (or chaining of if-else statements)
+to conditionally create objects. However, the team quickly realizes that this method of adding new products will become unweidly in the long-term. 
+That is because each new product that must be added now requires two things:
 
-Moreover, the development team notices that the codebase is hard to change since the Client code is tightly couple to concrete types of objects, namely: AirJordan, AirForce, SbDunk. 
+1) a object contruction call - `new <productName>()` (when the object is to be created)
+2) conditional logic to determine which object to create (overusing switch or if-else statements in client code)
 
-The developers set out to find a way to create multiple types of objects
-without having to rewrite a bunch of the client code...
+Moreover, the team begins to notice that the codebase becomes increasingly harder to change since the Client code is tightly couple to concrete/direct 
+type references to objects, namely: AirJordan, AirForce, SbDunk, Gazelle, Yeezy, and Samba.
+
+Understanding the production service will be hard to maintain in the future if this pattern continues, the developers set out to find a way to create 
+multiple types of objects without having to rewrite a bunch of the client code. After doing some research on software design,
+the team settles upon rewriting the product creation service using a **Factory Method Pattern**.
 
 ## Solution: The Factory Method
 
-This design pattern suggets that all tightly coupled object creation calls(i.e. `new <someObjectName>()`) are swapped out for a special **factory method**. The Client code can now call a factory method to produce the correct objects, without littering the Client code with a bunch of conditional logic.
+The Factory Method pattern suggests that all tightly coupled object creation calls (i.e. `new <someObjectName>()`) are replaced by a special **factory method**. The Client code can now call a factory method to produce the correct objects, without littering the Client code with a bunch of conditional logic.
 
 This is great since the Client code now contains less code and becomes more readable; however, one problem remains - how to make the Client code work with any of the objects that will be returned by the factory method?
 
@@ -45,7 +59,12 @@ Due to polymorphism, the Client code will be able to recognize the underlying ty
     relative to that factory.
 
 ## Structure
-![Factory Method UML Diagram](../../images/creational/uml-factory-method.png)
+
+### Generic Setup
+![Factory Method UML Diagram](../../images/creational/factory/concrete/01-factory-method-generic.png)
+
+### Implementation Example
+![Factory Method UML Example](../../images/creational/factory/concrete/02-factory-method-implementation.png)
 
 ## How To Implement
 1. Make all "products" follow the shared interface
